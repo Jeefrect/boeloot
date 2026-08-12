@@ -2,7 +2,7 @@
 ## Title: Boeloot
 ## Notes: Adds ATT zone-drop BoE loot to the Adventure Guide.
 ## Author: Jeefrect
-## Version: 1.0.0
+## Version: 1.0.1
 ## IconTexture: Interface\Icons\INV_Misc_Coin_01
 ## Dependencies: AllTheThings
 ## Group: AllTheThings
