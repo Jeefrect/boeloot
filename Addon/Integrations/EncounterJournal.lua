@@ -1,4 +1,4 @@
-local _, ns = ...
+local ns = select(2, ...)
 
 ns.JournalAdapter = { journalInstanceId = nil, difficultyId = 0 }
 

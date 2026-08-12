@@ -1,4 +1,4 @@
-local _, ns = ...
+local ns = select(2, ...)
 
 ns:RegisterLocale("enGB", {
     TAB_TOOLTIP = "BoE — Zone Drops from AllTheThings",

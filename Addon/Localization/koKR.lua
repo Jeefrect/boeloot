@@ -1,4 +1,4 @@
-local _, ns = ...
+local ns = select(2, ...)
 
 ns:RegisterLocale("koKR", {
     TAB_TOOLTIP = "BoE — AllTheThings 지역 전리품",

@@ -1,4 +1,4 @@
-local _, ns = ...
+local ns = select(2, ...)
 
 ns:RegisterLocale("zhTW", {
     TAB_TOOLTIP = "BoE — AllTheThings區域掉落",

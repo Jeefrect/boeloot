@@ -1,4 +1,4 @@
-local _, ns = ...
+local ns = select(2, ...)
 
 ns:RegisterLocale("ruRU", {
     TAB_TOOLTIP = "BoE — добыча локации из AllTheThings",

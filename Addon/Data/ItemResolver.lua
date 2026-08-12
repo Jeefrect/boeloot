@@ -1,4 +1,4 @@
-local _, ns = ...
+local ns = select(2, ...)
 
 ns.ItemResolver = {
     cache = {},
@@ -11,7 +11,8 @@ ns.ItemResolver = {
 
 local function ReadItem(item)
     local itemInfo = item.itemString or item.itemId
-    local name, link, quality, _, _, _, _, _, equipLoc, icon, _, classId, subclassId = C_Item.GetItemInfo(itemInfo)
+    local name, link, quality, itemLevel, minLevel, itemType, itemSubType, stackCount,
+        equipLoc, icon, sellPrice, classId, subclassId = C_Item.GetItemInfo(itemInfo)
     if not name then return nil end
     return {
         name = name,

@@ -1,4 +1,4 @@
-local _, ns = ...
+local ns = select(2, ...)
 
 local OFFICIAL_PAGES = { "overviewScroll", "LootContainer", "detailsScroll", "model" }
 local OFFICIAL_TABS = { "overviewTab", "lootTab", "bossTab", "modelTab" }

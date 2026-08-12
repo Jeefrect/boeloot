@@ -1,6 +1,7 @@
-local _, ns = ...
+local ns = select(2, ...)
 
 local ZONE_DROPS_HEADER_ID = -63
+local BIND_ON_EQUIP = 2
 
 ns.ATTRepository = {
     cache = {},
@@ -57,7 +58,7 @@ local function MatchesDifficulty(group, difficultyId)
 end
 
 local function IsEquippableGear(app, group, itemId)
-    local _, _, _, equipLoc, _, classId = C_Item.GetItemInfoInstant(itemId)
+    local resolvedItemId, itemType, itemSubType, equipLoc, icon, classId = C_Item.GetItemInfoInstant(itemId)
     local gearClass = classId == Enum.ItemClass.Armor or classId == Enum.ItemClass.Weapon
     if gearClass and equipLoc and equipLoc ~= "" then return true end
 
@@ -70,15 +71,26 @@ local function GetItemString(group, itemId)
     return rawget(group, "rawlink") or link or ("item:" .. itemId)
 end
 
+local function IsBindOnEquip(group, itemString)
+    local bindType = select(14, C_Item.GetItemInfo(itemString))
+    if bindType ~= nil then return bindType == BIND_ON_EQUIP end
+
+    local attBindType = SafeValue(group, "b")
+    return attBindType == nil or attBindType == BIND_ON_EQUIP
+end
+
 local function NormalizeItem(app, group, sourceName)
     local itemId = rawget(group, "itemID")
     if not itemId or not IsEquippableGear(app, group, itemId) then return end
+
+    local itemString = GetItemString(group, itemId)
+    if not IsBindOnEquip(group, itemString) then return end
 
     local sourceId = rawget(group, "sourceID")
     local modItemId = SafeValue(group, "modItemID")
     return {
         itemId = itemId,
-        itemString = GetItemString(group, itemId),
+        itemString = itemString,
         sourceId = sourceId,
         modItemId = modItemId,
         sourceName = sourceName or ns.L.UNKNOWN,
