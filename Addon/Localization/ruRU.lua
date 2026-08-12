@@ -16,4 +16,7 @@ ns:RegisterLocale("ruRU", {
     CACHE_CLEARED = "Временный кеш очищен.",
     COMMAND_HELP = "Команды: /boeloot, refresh, clear, status",
     JOURNAL_LOAD_FAILED = "Не удалось загрузить Blizzard_EncounterJournal: %s",
+    ITEM_ID_BUTTON = "ID",
+    COPY_ITEM_ID_TOOLTIP = "Скопировать ID предмета",
+    COPY_ITEM_ID_PROMPT = "Нажмите Ctrl+C, чтобы скопировать ID предмета.",
 })

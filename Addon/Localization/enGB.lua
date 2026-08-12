@@ -16,4 +16,7 @@ ns:RegisterLocale("enGB", {
     CACHE_CLEARED = "Runtime cache cleared.",
     COMMAND_HELP = "Commands: /boeloot, refresh, clear, status",
     JOURNAL_LOAD_FAILED = "Unable to load Blizzard_EncounterJournal: %s",
+    ITEM_ID_BUTTON = "ID",
+    COPY_ITEM_ID_TOOLTIP = "Copy item ID",
+    COPY_ITEM_ID_PROMPT = "Press Ctrl+C to copy the item ID.",
 })

@@ -29,6 +29,7 @@ Addon\Data\ItemResolver.lua
 Addon\Core\RuntimeCache.lua
 
 Addon\UI\Helpers.lua
+Addon\UI\ItemIdCopy.lua
 Addon\UI\ItemRow.lua
 Addon\UI\MainWindow.lua
 

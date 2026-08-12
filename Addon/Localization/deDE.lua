@@ -16,4 +16,7 @@ ns:RegisterLocale("deDE", {
     CACHE_CLEARED = "Laufzeit-Zwischenspeicher geleert.",
     COMMAND_HELP = "Befehle: /boeloot, refresh, clear, status",
     JOURNAL_LOAD_FAILED = "Blizzard_EncounterJournal konnte nicht geladen werden: %s",
+    ITEM_ID_BUTTON = "ID",
+    COPY_ITEM_ID_TOOLTIP = "Gegenstands-ID kopieren",
+    COPY_ITEM_ID_PROMPT = "Drücke Strg+C, um die Gegenstands-ID zu kopieren.",
 })

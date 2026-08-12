@@ -16,4 +16,7 @@ ns:RegisterLocale("zhCN", {
     CACHE_CLEARED = "运行时缓存已清除。",
     COMMAND_HELP = "命令：/boeloot、refresh、clear、status",
     JOURNAL_LOAD_FAILED = "无法加载Blizzard_EncounterJournal：%s",
+    ITEM_ID_BUTTON = "ID",
+    COPY_ITEM_ID_TOOLTIP = "复制物品 ID",
+    COPY_ITEM_ID_PROMPT = "按 Ctrl+C 复制物品 ID。",
 })

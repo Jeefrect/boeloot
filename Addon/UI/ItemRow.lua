@@ -60,6 +60,7 @@ end
 function ns.ItemRow.Initialize(row, elementData)
     local item = elementData.item
     SetLoading(row, item)
+    ns.ItemIdCopy:Attach(row).itemId = item.itemId
     ns.ItemResolver:Resolve(item, function(itemInfo)
         SetResolved(row, item, itemInfo)
     end)

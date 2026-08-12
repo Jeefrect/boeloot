@@ -16,4 +16,7 @@ ns:RegisterLocale("frFR", {
     CACHE_CLEARED = "Cache temporaire vidé.",
     COMMAND_HELP = "Commandes : /boeloot, refresh, clear, status",
     JOURNAL_LOAD_FAILED = "Impossible de charger Blizzard_EncounterJournal : %s",
+    ITEM_ID_BUTTON = "ID",
+    COPY_ITEM_ID_TOOLTIP = "Copier l’ID de l’objet",
+    COPY_ITEM_ID_PROMPT = "Appuyez sur Ctrl+C pour copier l’ID de l’objet.",
 })

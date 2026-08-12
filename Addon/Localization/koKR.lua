@@ -16,4 +16,7 @@ ns:RegisterLocale("koKR", {
     CACHE_CLEARED = "임시 캐시를 비웠습니다.",
     COMMAND_HELP = "명령어: /boeloot, refresh, clear, status",
     JOURNAL_LOAD_FAILED = "Blizzard_EncounterJournal을 불러올 수 없습니다: %s",
+    ITEM_ID_BUTTON = "ID",
+    COPY_ITEM_ID_TOOLTIP = "아이템 ID 복사",
+    COPY_ITEM_ID_PROMPT = "Ctrl+C를 눌러 아이템 ID를 복사하세요.",
 })
