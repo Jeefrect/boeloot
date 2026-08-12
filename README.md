@@ -1,5 +1,7 @@
 # BoE Loot
 
+**Download and install:** [CurseForge](https://www.curseforge.com/wow/addons/boe-loot-all-the-things-extension)
+
 A World of Warcraft addon that extends the **Adventure Guide** by adding a dedicated **BoE Loot** tab for dungeons and raids.
 
 It provides a convenient way to browse Bind on Equip items that can drop within an instance directly from the Adventure Guide.
