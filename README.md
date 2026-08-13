@@ -1,38 +1,39 @@
-# BoE Loot
+# Boeloot
 
 **Download and install:** [CurseForge](https://www.curseforge.com/wow/addons/boe-loot-all-the-things-extension)
 
-A World of Warcraft addon that extends the **Adventure Guide** by adding a dedicated **BoE Loot** tab for dungeons and raids.
+A World of Warcraft addon that adds instance and outdoor **Bind on Equip loot** to the Blizzard **Adventure Guide**.
 
-It provides a convenient way to browse Bind on Equip items that can drop within an instance directly from the Adventure Guide.
+## Features
 
-This addon extends [All The Things](https://www.curseforge.com/wow/addons/all-the-things) by providing an additional interface for browsing BoE loot.
+- Browse BoE zone drops from raids and dungeons in a dedicated loot tab.
+- Browse outdoor BoE loot by expansion and zone from the **BoE Loot** raid card.
+- Excludes personal and Warbound items that cannot be traded or sold.
+- Integrates directly into the existing Adventure Guide interface.
 
 <img width="1361" height="699" alt="image" src="https://github.com/user-attachments/assets/cfbabe80-9b61-49c5-8341-e3e4febc70e1" />
 
-
-
 ## Requirements
 
-Requires **All The Things (ATT)** for loot data.
+Requires [All The Things](https://www.curseforge.com/wow/addons/all-the-things) for loot data. Boeloot does not include a separate item database.
 
 Download ATT: [CurseForge](https://www.curseforge.com/wow/addons/all-the-things) or [GitHub](https://github.com/ATTWoWAddon/AllTheThings)
 
-Special thanks to the **All The Things** developers and contributors for their excellent work, which made this extension possible.
+Special thanks to the **All The Things** developers and contributors.
 
 ## Localization
 
 Supports the following World of Warcraft locales:
 
-* English (US)
-* English (EU)
-* German
-* Spanish (EU)
-* Spanish (Latin America)
-* French
-* Italian
-* Korean
-* Portuguese (Brazil)
-* Russian
-* Simplified Chinese
-* Traditional Chinese
+- English (US)
+- English (EU)
+- German
+- Spanish (EU)
+- Spanish (Latin America)
+- French
+- Italian
+- Korean
+- Portuguese (Brazil)
+- Russian
+- Simplified Chinese
+- Traditional Chinese
