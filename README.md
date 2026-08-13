@@ -11,8 +11,6 @@ A World of Warcraft addon that adds instance and outdoor **Bind on Equip loot** 
 - Excludes personal and Warbound items that cannot be traded or sold.
 - Integrates directly into the existing Adventure Guide interface.
 
-<img width="1361" height="699" alt="image" src="https://github.com/user-attachments/assets/cfbabe80-9b61-49c5-8341-e3e4febc70e1" />
-
 ## Requirements
 
 Requires [All The Things](https://www.curseforge.com/wow/addons/all-the-things) for loot data. Boeloot does not include a separate item database.
