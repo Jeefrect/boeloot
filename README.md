@@ -10,6 +10,7 @@ A World of Warcraft addon that adds instance and outdoor **Bind on Equip loot** 
 - Browse outdoor BoE loot by expansion and zone from the **BoE Loot** raid card.
 - Excludes personal and Warbound items that cannot be traded or sold.
 - Integrates directly into the existing Adventure Guide interface.
+- Quick item ID copying for Wowhead, Undermine, or other services.
 
 ## Requirements
 
