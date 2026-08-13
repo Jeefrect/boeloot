@@ -2,6 +2,7 @@ local ns = select(2, ...)
 
 ns.Events = {
     ATT_DATA_READY = "ATT_DATA_READY",
+    RUNTIME_CACHE_CLEARED = "RUNTIME_CACHE_CLEARED",
     listeners = {},
 }
 

@@ -61,7 +61,20 @@ function ns.ItemRow.Initialize(row, elementData)
     local item = elementData.item
     SetLoading(row, item)
     ns.ItemIdCopy:Attach(row).itemId = item.itemId
-    ns.ItemResolver:Resolve(item, function(itemInfo)
+    local function OnResolved(itemInfo)
+        if not item.bindingValidated and not ns.ATTItemCollector.ValidateBinding(
+            item,
+            itemInfo and itemInfo.bindType,
+            itemInfo and itemInfo.tooltipBinding
+        ) then
+            if elementData.onInvalid then elementData.onInvalid(elementData) end
+            return
+        end
         SetResolved(row, item, itemInfo)
-    end)
+    end
+    if item.bindingValidated then
+        ns.ItemResolver:ResolveDisplay(item, OnResolved)
+    else
+        ns.ItemResolver:Resolve(item, OnResolved)
+    end
 end

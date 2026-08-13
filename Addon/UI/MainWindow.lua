@@ -12,9 +12,14 @@ local repositoryErrors = {
     ["att-disabled"] = ns.L.ATT_MISSING,
     ["att-loading"] = ns.L.ATT_LOADING,
     ["att-incompatible"] = ns.L.ATT_INCOMPATIBLE,
+    ["instance-loading"] = ns.L.INSTANCE_LOADING,
     ["instance-missing"] = ns.L.ATT_INSTANCE_MISSING,
     ["no-items"] = ns.L.NO_DATA,
 }
+
+local function GetContextKey(journalInstanceId, difficultyId)
+    return tostring(journalInstanceId) .. ":" .. tostring(difficultyId or 0)
+end
 
 function ns.MainWindow:CreateTab(info)
     local tab = CreateFrame("Button", "BoelootEncounterJournalTab", info, "EncounterTabTemplate")
@@ -52,20 +57,19 @@ function ns.MainWindow:CreatePage(info)
     frame:SetFrameStrata("HIGH")
     frame:Hide()
 
-    local scrollBox = CreateFrame("Frame", nil, frame, "WowScrollBoxList")
-    scrollBox:SetSize(345, 382)
-    scrollBox:SetPoint("BOTTOMRIGHT", -20, 1)
-
-    local scrollBar = CreateFrame("EventFrame", nil, frame, "MinimalScrollBar")
-    scrollBar:SetPoint("TOPLEFT", scrollBox, "TOPRIGHT", 5, -5)
-    scrollBar:SetPoint("BOTTOMLEFT", scrollBox, "BOTTOMRIGHT", 5, 5)
+    local itemList = ns.ItemList:Create(frame, "BoelootEncounterJournalItemList", 345, 382)
+    itemList.frame:SetPoint("BOTTOMRIGHT", -5, 1)
 
     local refreshButton = CreateFrame("Button", "BoelootEncounterJournalRefreshButton", EncounterJournal, "RefreshButtonTemplate")
     refreshButton:SetPoint("TOPLEFT", EncounterJournal, "TOPRIGHT", 8, -34)
     refreshButton:SetFrameStrata(EncounterJournal:GetFrameStrata())
     refreshButton:SetFrameLevel(EncounterJournal:GetFrameLevel() + 10)
     refreshButton:SetScript("OnClick", function()
-        self:ForceRefresh()
+        if ns.CustomPages and ns.CustomPages:IsActive() then
+            ns.CustomPages:ForceRefreshActive()
+        else
+            self:ForceRefresh()
+        end
         PlaySound(SOUNDKIT.IG_MAINMENU_OPTION_CHECKBOX_ON)
     end)
     refreshButton:SetScript("OnEnter", function(button)
@@ -76,18 +80,6 @@ function ns.MainWindow:CreatePage(info)
     end)
     refreshButton:SetScript("OnLeave", GameTooltip_Hide)
 
-    local view = CreateScrollBoxListLinearView()
-    view:SetElementExtent(ns.ItemRow.HEIGHT)
-    view:SetElementInitializer("EncounterItemTemplate", ns.ItemRow.Initialize)
-    ScrollUtil.InitScrollBoxListWithScrollBar(scrollBox, scrollBar, view)
-
-    local message = frame:CreateFontString(nil, "OVERLAY", "GameFontNormalLarge")
-    message:SetPoint("CENTER", scrollBox, "CENTER", 0, 12)
-    message:SetWidth(300)
-    message:SetJustifyH("CENTER")
-    message:SetTextColor(0.25, 0.148, 0.02)
-    message:Hide()
-
     frame:SetScript("OnShow", function()
         if EncounterJournal_HideCreatures then EncounterJournal_HideCreatures() end
         EncounterJournal.encounter.instance:Hide()
@@ -96,9 +88,10 @@ function ns.MainWindow:CreatePage(info)
     end)
 
     self.frame = frame
-    self.scrollBox = scrollBox
+    self.itemList = itemList
+    self.scrollBox = itemList.scrollBox
     self.refreshButton = refreshButton
-    self.message = message
+    self.message = itemList.message
 end
 
 function ns.MainWindow:Initialize()
@@ -167,6 +160,7 @@ function ns.MainWindow:Select()
     end
 
     local info = EncounterJournal.encounter.info
+    if ns.CustomPages then ns.CustomPages:CloseActive(true) end
     self.selected = true
     self.remembered = true
     for _, frameName in ipairs(OFFICIAL_PAGES) do
@@ -179,7 +173,11 @@ function ns.MainWindow:Select()
     self.frame:Show()
     if info.difficulty then info.difficulty:SetShown(EncounterJournal.instanceID ~= nil) end
     self:UpdateTabLayout()
-    self:SetContext(EncounterJournal.instanceID, EJ_GetDifficulty and EJ_GetDifficulty() or 0)
+    local changed = self:SetContext(
+        EncounterJournal.instanceID,
+        EJ_GetDifficulty and EJ_GetDifficulty() or 0
+    )
+    if not changed then self:Refresh() end
 end
 
 function ns.MainWindow:RestoreSelection()
@@ -189,15 +187,17 @@ function ns.MainWindow:RestoreSelection()
 end
 
 function ns.MainWindow:SetContext(journalInstanceId, difficultyId)
+    difficultyId = difficultyId or 0
+    local changed = self.journalInstanceId ~= journalInstanceId or self.difficultyId ~= difficultyId
     self.journalInstanceId = journalInstanceId
-    self.difficultyId = difficultyId or 0
-    if self.initialized then self:Refresh() end
+    self.difficultyId = difficultyId
+    if self.initialized and self.selected and changed then self:Refresh() end
+    return changed
 end
 
 function ns.MainWindow:Refresh()
-    if not self.initialized then return end
+    if not self.initialized or not self.selected then return end
 
-    local dataProvider = CreateDataProvider()
     local message
     local items
     if not self.journalInstanceId then
@@ -205,26 +205,43 @@ function ns.MainWindow:Refresh()
         items = {}
     else
         local reason
-        items, reason = ns.ATTRepository:GetItems(self.journalInstanceId, self.difficultyId)
+        local requestedInstance = self.journalInstanceId
+        local requestedDifficulty = self.difficultyId
+        items, reason = ns.ATTRepository:GetItems(requestedInstance, requestedDifficulty)
         items = items or {}
         message = repositoryErrors[reason]
-        for _, item in ipairs(items) do
-            dataProvider:Insert({ item = item })
+        if reason == "instance-loading" then
+            local requestKey = GetContextKey(requestedInstance, requestedDifficulty)
+            if self.loadingContextKey ~= requestKey then
+                self.loadingContextKey = requestKey
+                ns.ATTRepository:RequestItems(requestedInstance, requestedDifficulty, function()
+                    if self.loadingContextKey == requestKey then self.loadingContextKey = nil end
+                    if not self.selected or self.journalInstanceId ~= requestedInstance
+                    or self.difficultyId ~= requestedDifficulty
+                    then
+                        return
+                    end
+                    self:Refresh()
+                end)
+            end
         end
     end
-
-    self.scrollBox:SetDataProvider(dataProvider)
-    self.message:SetText(message or "")
-    self.message:SetShown(message ~= nil)
+    self.itemList:SetItems(items, message, ns.L.NO_DATA)
 end
 
 function ns.MainWindow:ForceRefresh()
+    self.loadingContextKey = nil
     ns.RuntimeCache:Clear()
     self:Refresh()
 end
 
+function ns.MainWindow:ResetLoadingState()
+    self.loadingContextKey = nil
+end
+
 function ns.MainWindow:Toggle()
-    if self.selected and EncounterJournal and EncounterJournal:IsShown() then
+    local customPageActive = ns.CustomPages and ns.CustomPages:IsActive()
+    if (self.selected or customPageActive) and EncounterJournal and EncounterJournal:IsShown() then
         HideUIPanel(EncounterJournal)
     else
         ns.JournalAdapter:OpenBoETab()

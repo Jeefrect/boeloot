@@ -1,11 +1,12 @@
 ## Interface: 120100
 ## Title: Boeloot
-## Notes: Adds ATT zone-drop BoE loot to the Adventure Guide.
+## Notes: Adds instance and outdoor BoE loot to the Adventure Guide.
 ## Author: Jeefrect
-## Version: 1.0.2
+## Version: 1.1.0
 ## IconTexture: Interface\Icons\INV_Misc_Coin_01
 ## Dependencies: AllTheThings
 ## Group: AllTheThings
+## SavedVariables: BoelootDB
 
 Addon\Core\Namespace.lua
 Addon\Core\Localization.lua
@@ -24,15 +25,25 @@ Addon\Localization\ruRU.lua
 Addon\Localization\zhCN.lua
 Addon\Localization\zhTW.lua
 
+Addon\Data\ATTItemCollector.lua
 Addon\Data\ATTRepository.lua
+Addon\Data\PersistentCache.lua
+Addon\Data\OutdoorLootRepository.lua
+Addon\Data\OutdoorCacheStore.lua
+Addon\Data\InstanceCacheStore.lua
 Addon\Data\ItemResolver.lua
 Addon\Core\RuntimeCache.lua
 
 Addon\UI\Helpers.lua
 Addon\UI\ItemIdCopy.lua
 Addon\UI\ItemRow.lua
+Addon\UI\ItemList.lua
+Addon\UI\CustomPage.lua
+Addon\UI\CustomPageRegistry.lua
 Addon\UI\MainWindow.lua
+Addon\UI\OutdoorPage.lua
 
+Addon\Integrations\CustomPageCards.lua
 Addon\Integrations\EncounterJournal.lua
 Addon\Commands\SlashCommands.lua
 Addon\Core\Bootstrap.lua

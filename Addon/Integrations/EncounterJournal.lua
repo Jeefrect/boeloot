@@ -3,11 +3,16 @@ local ns = select(2, ...)
 ns.JournalAdapter = { journalInstanceId = nil, difficultyId = 0 }
 
 function ns.JournalAdapter:ScheduleRestore()
-    if self.restoreScheduled or not ns.MainWindow.remembered then return end
+    local customPageRemembered = ns.CustomPages and ns.CustomPages:HasRememberedSelection()
+    if self.restoreScheduled or (not customPageRemembered and not ns.MainWindow.remembered) then return end
     self.restoreScheduled = true
     C_Timer.After(0, function()
         self.restoreScheduled = false
-        ns.MainWindow:RestoreSelection()
+        if ns.CustomPages and ns.CustomPages:HasRememberedSelection() then
+            ns.CustomPages:RestoreSelection()
+        else
+            ns.MainWindow:RestoreSelection()
+        end
     end)
 end
 
@@ -21,14 +26,17 @@ function ns.JournalAdapter:Initialize()
     if self.initialized then return true end
     if not EncounterJournal then return false end
     if not ns.MainWindow:Initialize() then return false end
+    if not ns.CustomPages:Initialize() then return false end
 
     self.initialized = true
     hooksecurefunc("EncounterJournal_DisplayInstance", function(instanceId)
+        ns.CustomPages:CloseActive()
         self:Update(instanceId)
         ns.MainWindow:UpdateTabLayout()
         self:ScheduleRestore()
     end)
     hooksecurefunc("EncounterJournal_DisplayEncounter", function()
+        ns.CustomPages:CloseActive()
         self:Update()
         ns.MainWindow:UpdateTabLayout()
         self:ScheduleRestore()
@@ -44,12 +52,14 @@ function ns.JournalAdapter:Initialize()
         self:ScheduleRestore()
     end)
     EncounterJournal:HookScript("OnHide", function()
+        ns.CustomPages:CloseActive()
         ns.MainWindow:Deselect()
     end)
     EncounterJournal:HookScript("OnEvent", function(_, event)
         if event == "EJ_DIFFICULTY_UPDATE" then self:ScheduleRestore() end
     end)
     self:Update()
+    ns.CustomPageCards:Initialize()
     return true
 end
 
