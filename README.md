@@ -1,4 +1,4 @@
-# Boeloot
+# BoE Loot
 
 **Download and install:** [CurseForge](https://www.curseforge.com/wow/addons/boe-loot-all-the-things-extension)
 
